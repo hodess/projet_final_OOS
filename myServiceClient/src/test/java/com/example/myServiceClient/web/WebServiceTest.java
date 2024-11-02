@@ -1,8 +1,8 @@
 package com.example.myServiceClient.web;
 
-import com.example.myServiceClient.data.CarClient;
+import com.example.myServiceClient.data.BookClient;
+import com.example.myServiceClient.service.BookService;
 import com.example.myServiceClient.service.MyService;
-import com.example.myServiceClient.service.CarService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class WebServiceTest {
     private MyService myService;
 
     @MockBean
-    private CarService carService;
+    private BookService carService;
 
     // Test pour le endpoint de "sayHello()"
     @Test
@@ -52,9 +52,9 @@ public class WebServiceTest {
     @Test
     public void testAllCars() throws Exception {
         // Créer des voitures factices
-        List<CarClient> carList = new ArrayList<>();
-        carList.add(new CarClient("ABC123", "Toyota", 20000, false, 1L));
-        carList.add(new CarClient("DEF456", "Honda", 18000, true, 2L));
+        List<BookClient> carList = new ArrayList<>();
+        carList.add(new BookClient("ABC123", "Toyota", 20000, false, 1L));
+        carList.add(new BookClient("DEF456", "Honda", 18000, true, 2L));
 
         // Simuler la réponse du service CarService
         when(carService.allCars()).thenReturn(carList);
@@ -72,7 +72,7 @@ public class WebServiceTest {
     @Test
     public void testGetCarById() throws Exception {
         // Créer une voiture factice
-        CarClient car = new CarClient("XYZ789", "BMW", 30000, false, 3L);
+        BookClient car = new BookClient("XYZ789", "BMW", 30000, false, 3L);
 
         // Simuler la réponse du service CarService pour un ID spécifique
         when(carService.getCarById("XYZ789")).thenReturn(car);

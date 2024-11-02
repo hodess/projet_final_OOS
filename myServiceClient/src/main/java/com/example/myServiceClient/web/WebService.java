@@ -1,8 +1,8 @@
 package com.example.myServiceClient.web;
 
 import com.example.myServiceClient.data.*;
+import com.example.myServiceClient.service.BookService;
 import com.example.myServiceClient.service.MyService;
-import com.example.myServiceClient.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +13,12 @@ import java.util.List;
 public class WebService {
 
     private final MyService myService; // Déclaration finale pour éviter des problèmes de mutabilité
-    private final CarService carService;
+    private final BookService bookService;
 
     @Autowired
-    public WebService(MyService myService, CarService carService) {
+    public WebService(MyService myService, BookService bookService, BookService bookService1) {
         this.myService = myService;
-        this.carService = carService;
+        this.bookService = bookService;
     }
 
     @GetMapping("/") // Endpoint pour le hello world
@@ -29,19 +29,19 @@ public class WebService {
 
     @GetMapping("/cars") // Endpoint pour récupérer toutes les voitures
     @ResponseStatus(HttpStatus.OK)
-    public List<CarClient> allCars() {
-        return carService.allCars();
+    public List<BookClient> allCars() {
+        return bookService.allCars();
     }
 
     @GetMapping("/cars/{id}") // Endpoint pour récupérer toutes les voitures
     @ResponseStatus(HttpStatus.OK)
-    public CarClient getCarById(@PathVariable("id") String id) {
-        return carService.getCarById(id); // Appel au service pour récupérer la voiture par ID
+    public BookClient getCarById(@PathVariable("id") String id) {
+        return bookService.getCarById(id); // Appel au service pour récupérer la voiture par ID
     }
 
     @PutMapping("/cars/{id}") // Reserver une voiture
     @ResponseStatus(HttpStatus.OK)
     public String postCarRent(@PathVariable("id") String id, @RequestParam("rent") boolean rent) {
-        return carService.postRentCar(id, rent);
+        return bookService.postRentCar(id, rent);
     }
 }

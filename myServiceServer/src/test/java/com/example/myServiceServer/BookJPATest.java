@@ -1,8 +1,7 @@
 package com.example.myServiceServer;
 
 import com.example.myServiceServer.data.CarJPA;
-import com.example.myServiceServer.data.CarRepository;
-import com.example.myServiceServer.service.CarService;
+import com.example.myServiceServer.data.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Rollback
-public class CarJPATest {
+public class BookJPATest {
 
     @Autowired
-    private CarRepository carRepository;
+    private BookRepository bookRepository;
 
     private CarJPA car;
 
     @BeforeEach
     public void setUp() {
-        carRepository.deleteAll();
+        bookRepository.deleteAll();
         car = new CarJPA("ABC123", "Toyota", 20000, false, 0);
     }
 
@@ -32,7 +31,7 @@ public class CarJPATest {
     @Test
     public void testSaveCar() {
         // Sauvegarder la voiture
-        CarJPA savedCar = carRepository.save(car);
+        CarJPA savedCar = bookRepository.save(car);
 
         // Vérifier si l'objet a bien été sauvegardé et que l'ID est généré
         assertNotNull(savedCar.getId());
@@ -42,10 +41,10 @@ public class CarJPATest {
     @Test
     public void testFindCarByPlateNumber() {
         // Sauvegarder une voiture
-        carRepository.save(car);
+        bookRepository.save(car);
 
         // Chercher par numéro de plaque
-        CarJPA foundCar = carRepository.findByPlateNumber("ABC123");
+        CarJPA foundCar = bookRepository.findByPlateNumber("ABC123");
 
         // Vérifier que la voiture a bien été trouvée
         assertNotNull(foundCar);
@@ -55,14 +54,14 @@ public class CarJPATest {
     @Test
     public void testUpdateCar() {
         // Sauvegarder la voiture
-        CarJPA savedCar = carRepository.save(car);
+        CarJPA savedCar = bookRepository.save(car);
 
         // Modifier des informations
         savedCar.setRented(true);
-        carRepository.save(savedCar);
+        bookRepository.save(savedCar);
 
         // Chercher la voiture modifiée
-        CarJPA updatedCar = carRepository.findByPlateNumber("ABC123");
+        CarJPA updatedCar = bookRepository.findByPlateNumber("ABC123");
 
         // Vérifier la mise à jour
         assertTrue(updatedCar.isRented());
@@ -71,13 +70,13 @@ public class CarJPATest {
     @Test
     public void testDeleteCar() {
         // Sauvegarder la voiture
-        CarJPA savedCar = carRepository.save(car);
+        CarJPA savedCar = bookRepository.save(car);
 
         // Supprimer la voiture
-        carRepository.delete(savedCar);
+        bookRepository.delete(savedCar);
 
         // Chercher la voiture supprimée
-        CarJPA foundCar = carRepository.findByPlateNumber("ABC123");
+        CarJPA foundCar = bookRepository.findByPlateNumber("ABC123");
 
         // Vérifier que la voiture n'existe plus
         assertNull(foundCar, "La voiture aurait dû être supprimée");

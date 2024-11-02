@@ -1,13 +1,12 @@
 package com.example.myServiceClient.data;
 import com.example.lib.Car;
-import com.example.myServiceClient.data.CarClient;
 
 //Normaliser la convertion : https://www.baeldung.com/spring-type-conversions
-public class CarConverter {
+public class BookConverter {
 
     // Convertir un message Protobuf Car en une entité CarJPA
-    public static CarClient protobufToCarClient(Car car) {
-        return new CarClient(
+    public static BookClient protobufToCarClient(Car car) {
+        return new BookClient(
                 car.getPlateNumber(),
                 car.getBrand(),
                 car.getPrice(),

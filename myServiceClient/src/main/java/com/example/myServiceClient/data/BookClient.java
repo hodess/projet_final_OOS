@@ -1,6 +1,6 @@
 package com.example.myServiceClient.data;
 
-public class CarClient {
+public class BookClient {
     private String plateNumber;
     private String brand;
     private int price;
@@ -8,7 +8,7 @@ public class CarClient {
     private long id;
 
 
-    public CarClient(String plateNumber, String brand, int price, boolean rented, long id) {
+    public BookClient(String plateNumber, String brand, int price, boolean rented, long id) {
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.price = price;

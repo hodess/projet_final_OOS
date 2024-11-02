@@ -2,7 +2,7 @@ package com.example.myServiceServer.data;
 
 import com.example.lib.Car;
 
-public class CarConverter {
+public class BookConverter {
 
     public static Car carJPAToProtobuf(CarJPA CarClient) {
         return Car.newBuilder()
