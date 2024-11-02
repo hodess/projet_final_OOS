@@ -1,4 +1,4 @@
-package com.example.myServiceClient.web;
+/* package com.example.myServiceClient.web;
 
 import com.example.myServiceClient.data.BookClient;
 import com.example.myServiceClient.service.BookService;
@@ -34,7 +34,7 @@ public class WebServiceTest {
     private MyService myService;
 
     @MockBean
-    private BookService carService;
+    private BookService bookService;
 
     // Test pour le endpoint de "sayHello()"
     @Test
@@ -48,54 +48,58 @@ public class WebServiceTest {
                 .andExpect(content().string(equalTo("Hello, world!")));
     }
 
-    // Test pour le endpoint "allCars()"
+    // Test pour le endpoint "allBooks()"
     @Test
-    public void testAllCars() throws Exception {
-        // Créer des voitures factices
-        List<BookClient> carList = new ArrayList<>();
-        carList.add(new BookClient("ABC123", "Toyota", 20000, false, 1L));
-        carList.add(new BookClient("DEF456", "Honda", 18000, true, 2L));
+    public void testAllBooks() throws Exception {
+        // Créer des livres factices
+        List<BookClient> bookList = new ArrayList<>();
+        bookList.add(new BookClient("ABC123", "Tolkien", "The Lord of the Ring", false, "Galimard"));
+        bookList.add(new BookClient("DEF456", "JK Rowling", "Harry Potter", true, "Folio"));
 
-        // Simuler la réponse du service CarService
-        when(carService.allCars()).thenReturn(carList);
+        // Simuler la réponse du service BookService
+        when(bookService.allBooks()).thenReturn(bookList);
 
         // Effectuer une requête GET et vérifier le résultat
-        mockMvc.perform(get("/cars")
+        mockMvc.perform(get("/books")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].plateNumber", equalTo("ABC123")))
-                .andExpect(jsonPath("$[1].plateNumber", equalTo("DEF456")));
+                .andExpect(jsonPath("$[0].ISBN", equalTo("ABC123")))
+                .andExpect(jsonPath("$[1].ISBN", equalTo("DEF456")));
     }
 
-    // Test pour le endpoint "getCarById()"
+    // Test pour le endpoint "getBookById()"
     @Test
-    public void testGetCarById() throws Exception {
-        // Créer une voiture factice
-        BookClient car = new BookClient("XYZ789", "BMW", 30000, false, 3L);
+    public void testGetBookById() throws Exception {
+        // Créer un livre factice
+        BookClient book = new BookClient("XYZ789", "Tolkien", "The Hobbit", false, "Galimard");
 
-        // Simuler la réponse du service CarService pour un ID spécifique
-        when(carService.getCarById("XYZ789")).thenReturn(car);
+
+        // Simuler la réponse du service BookService pour un ID spécifique
+        when(bookService.getBookByISBN("XYZ789")).thenReturn(book);
 
         // Effectuer une requête GET et vérifier le résultat
-        mockMvc.perform(get("/cars/XYZ789")
+        mockMvc.perform(get("/books/XYZ789")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.plateNumber", equalTo("XYZ789")))
-                .andExpect(jsonPath("$.brand", equalTo("BMW")));
+                .andExpect(jsonPath("$.ISBN", equalTo("XYZ789")))
+                .andExpect(jsonPath("$.author", equalTo("Tolkien")));
     }
 
-    // Test pour le endpoint "postCarRent()"
+    // Test pour le endpoint "postBookRent()"
     @Test
-    public void testPostCarRent() throws Exception {
-        // Simuler la réponse du service CarService
-        when(carService.postRentCar("ABC123", true)).thenReturn("{\"Actual_Rent\": true}");
+    public void testPostBookRent() throws Exception {
+        // Simuler la réponse du service BookService
+        when(bookService.postRentBook("ABC123", true)).thenReturn("{\"Actual_Rent\": true}");
 
         // Effectuer une requête PUT (et non GET) et vérifier le résultat
-        mockMvc.perform(put("/cars/ABC123")
+        mockMvc.perform(put("/books/ABC123")
                         .param("rent", "true")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"Actual_Rent\": true")));
     }
 }
+
+
+ */

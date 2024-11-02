@@ -1,27 +1,27 @@
 package com.example.myServiceServer.data;
 
-import com.example.lib.Car;
+import com.example.lib.Book;
 
 public class BookConverter {
 
-    public static Car carJPAToProtobuf(CarJPA CarClient) {
-        return Car.newBuilder()
-                .setPlateNumber(CarClient.getPlateNumber())
-                .setBrand(CarClient.getBrand())
-                .setPrice(CarClient.getPrice())
-                .setRented(CarClient.isRented())
-                .setId(CarClient.getId())
+    public static Book bookJPAToProtobuf(BookJPA BookClient) {
+        return Book.newBuilder()
+                .setISBN(BookClient.getISBN())
+                .setName(BookClient.getName())
+                .setAuthor(BookClient.getAuthor())
+                .setRented(BookClient.isRented())
+                .setEditor(BookClient.getEditor())
                 .build();
     }
 
-    // Convertir un message Protobuf Car en une entité CarJPA
-    public static CarJPA protobufToCarJPA(Car car) {
-        return new CarJPA(
-                car.getPlateNumber(),
-                car.getBrand(),
-                car.getPrice(),
-                car.getRented(),
-                car.getId()
+    // Convertir un message Protobuf Book en une entité BookJPA
+    public static BookJPA protobufToBookJPA(Book book) {
+        return new BookJPA(
+                book.getISBN(),
+                book.getName(),
+                book.getAuthor(),
+                book.getRented(),
+                book.getEditor()
         );
     }
 }

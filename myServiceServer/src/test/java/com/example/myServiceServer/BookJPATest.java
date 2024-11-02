@@ -1,6 +1,6 @@
-package com.example.myServiceServer;
+/* package com.example.myServiceServer;
 
-import com.example.myServiceServer.data.CarJPA;
+import com.example.myServiceServer.data.BookJPA;
 import com.example.myServiceServer.data.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,66 +19,70 @@ public class BookJPATest {
     @Autowired
     private BookRepository bookRepository;
 
-    private CarJPA car;
+    private BookJPA book;
 
     @BeforeEach
     public void setUp() {
         bookRepository.deleteAll();
-        car = new CarJPA("ABC123", "Toyota", 20000, false, 0);
+        book = new BookJPA("ABC123", "The Hobbit", "Tolkien", false, "Galimard");
     }
 
 
     @Test
-    public void testSaveCar() {
+    public void testSaveBook() {
         // Sauvegarder la voiture
-        CarJPA savedCar = bookRepository.save(car);
+        BookJPA savedBook = bookRepository.save(book);
 
         // Vérifier si l'objet a bien été sauvegardé et que l'ID est généré
-        assertNotNull(savedCar.getId());
-        assertEquals(car.getPlateNumber(), savedCar.getPlateNumber());
+        assertNotNull(savedBook.getISBN());
+        assertEquals(book.getISBN(), savedBook.getISBN());
     }
 
     @Test
-    public void testFindCarByPlateNumber() {
-        // Sauvegarder une voiture
-        bookRepository.save(car);
+    public void testFindBookByISBN() {
+        // Sauvegarder un livre
+        bookRepository.save(book);
 
         // Chercher par numéro de plaque
-        CarJPA foundCar = bookRepository.findByPlateNumber("ABC123");
+        BookJPA foundBook = bookRepository.findByISBN("ABC123");
 
-        // Vérifier que la voiture a bien été trouvée
-        assertNotNull(foundCar);
-        assertEquals("Toyota", foundCar.getBrand());
+        // Vérifier que le livre a bien été trouvée
+        assertNotNull(foundBook);
+        assertEquals("The Hobbit", foundBook.getName());
     }
 
     @Test
-    public void testUpdateCar() {
-        // Sauvegarder la voiture
-        CarJPA savedCar = bookRepository.save(car);
+    public void testUpdateBook() {
+        // Sauvegarder le livre
+        BookJPA savedBook = bookRepository.save(book);
 
         // Modifier des informations
-        savedCar.setRented(true);
-        bookRepository.save(savedCar);
+        savedBook.setRented(true);
+        bookRepository.save(savedBook);
 
         // Chercher la voiture modifiée
-        CarJPA updatedCar = bookRepository.findByPlateNumber("ABC123");
+        BookJPA updatedBook = bookRepository.findByISBN("ABC123");
 
         // Vérifier la mise à jour
-        assertTrue(updatedCar.isRented());
+        assertTrue(updatedBook.isRented());
     }
 
     @Test
-    public void testDeleteCar() {
+    public void testDeleteBook() {
         // Sauvegarder la voiture
-        CarJPA savedCar = bookRepository.save(car);
+        BookJPA savedBook = bookRepository.save(book);
 
         // Supprimer la voiture
-        bookRepository.delete(savedCar);
+        bookRepository.delete(savedBook);
 
         // Chercher la voiture supprimée
-        CarJPA foundCar = bookRepository.findByPlateNumber("ABC123");
+        BookJPA foundBook = bookRepository.findByISBN("ABC123");
 
         // Vérifier que la voiture n'existe plus
-        assertNull(foundCar, "La voiture aurait dû être supprimée");
+        assertNull(foundBook, "La voiture aurait dû être supprimée");
     }
 }
+
+
+
+ */

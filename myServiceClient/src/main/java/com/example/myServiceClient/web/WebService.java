@@ -27,21 +27,21 @@ public class WebService {
         return myService.sayHello();
     }
 
-    @GetMapping("/cars") // Endpoint pour récupérer toutes les voitures
+    @GetMapping("/books") // Endpoint pour récupérer toutes les voitures
     @ResponseStatus(HttpStatus.OK)
-    public List<BookClient> allCars() {
-        return bookService.allCars();
+    public List<BookClient> allBooks() {
+        return bookService.allBooks();
     }
 
-    @GetMapping("/cars/{id}") // Endpoint pour récupérer toutes les voitures
+    @GetMapping("/books/{ISBN}") // Endpoint pour récupérer toutes les voitures
     @ResponseStatus(HttpStatus.OK)
-    public BookClient getCarById(@PathVariable("id") String id) {
-        return bookService.getCarById(id); // Appel au service pour récupérer la voiture par ID
+    public BookClient getBooksByISBN(@PathVariable("ISBN") String ISBN) {
+        return bookService.getBookByISBN(ISBN); // Appel au service pour récupérer la voiture par ID
     }
 
-    @PutMapping("/cars/{id}") // Reserver une voiture
+    @PutMapping("/books/{ISBN}") // Reserver une voiture
     @ResponseStatus(HttpStatus.OK)
-    public String postCarRent(@PathVariable("id") String id, @RequestParam("rent") boolean rent) {
-        return bookService.postRentCar(id, rent);
+    public String postBookRent(@PathVariable("ISBN") String ISBN, @RequestParam("rent") boolean rent) {
+        return bookService.postRentBook(ISBN, rent);
     }
 }

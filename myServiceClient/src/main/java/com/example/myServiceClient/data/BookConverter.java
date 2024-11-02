@@ -1,18 +1,18 @@
 package com.example.myServiceClient.data;
-import com.example.lib.Car;
+
+import com.example.lib.Book;
 
 //Normaliser la convertion : https://www.baeldung.com/spring-type-conversions
 public class BookConverter {
 
-    // Convertir un message Protobuf Car en une entité CarJPA
-    public static BookClient protobufToCarClient(Car car) {
+    // Convertir un message Protobuf Book en une entité BookJPA
+    public static BookClient protobufToBookClient(Book book) {
         return new BookClient(
-                car.getPlateNumber(),
-                car.getBrand(),
-                car.getPrice(),
-                car.getRented(),
-                car.getId()
+                book.getISBN(),
+                book.getName(),
+                book.getAuthor(),
+                book.getEditor(),
+                book.getRented()
         );
     }
 }
-

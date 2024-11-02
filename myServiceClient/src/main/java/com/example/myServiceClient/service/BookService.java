@@ -19,55 +19,55 @@ public class BookService {
 
     Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    @GrpcClient("carService")
-    private CarServiceGrpc.CarServiceBlockingStub carServiceStub;
+    @GrpcClient("bookService")
+    private BookServiceGrpc.BookServiceBlockingStub bookServiceStub;
 
-    // Méthode pour obtenir toutes les voitures (CarClient) depuis le serveur gRPC
-    public List<BookClient> allCars() {
-        logger.info("Récupération de toutes les voitures...");
+    // Méthode pour obtenir tous les livres (BookClient) depuis le serveur gRPC
+    public List<BookClient> allBooks() {
+        logger.info("Récupération de touts les livres...");
 
-        // Appel gRPC pour obtenir les voitures sous forme de message Protobuf
-        GetAllCarsResponse reply = carServiceStub.getAllCars(GetAllCarsRequest.newBuilder().build());
+        // Appel gRPC pour obtenir les livres sous forme de message Protobuf
+        GetAllBooksResponse reply = bookServiceStub.getAllBooks(GetAllBooksRequest.newBuilder().build());
 
-        // Convertir chaque message Protobuf Car en entité CarClient
-        return reply.getCarsList().stream()
-                .map(BookConverter::protobufToCarClient) // Conversion Protobuf -> JPA
+        // Convertir chaque message Protobuf Book en entité BookClient
+        return reply.getBooksList().stream()
+                .map(BookConverter::protobufToBookClient) // Conversion Protobuf -> JPA
                 .collect(Collectors.toList());
     }
 
-    // Méthode pour obtenir une voiture par son numéro de plaque (CarClient)
-    public BookClient getCarById(String plateNumber) {
-        logger.info("Récupération de la voiture avec la plaque : " + plateNumber);
+    // Méthode pour obtenir un livre par son numéro d'isbn
+    public BookClient getBookByISBN(String ISBN) {
+        logger.info("Récupération du livre avec le numéro ISBN : " + ISBN);
 
         try {
-            GetCarResponse reply = carServiceStub.getCar(GetCarRequest.newBuilder().setPlateNumber(plateNumber).build());
-            return BookConverter.protobufToCarClient(reply.getCar());
+            GetBookResponse reply = bookServiceStub.getBook(GetBookRequest.newBuilder().setISBN(ISBN).build());
+            return BookConverter.protobufToBookClient(reply.getBook());
         } catch (StatusRuntimeException e) {
             if (e.getStatus().getCode() == Status.Code.NOT_FOUND) {
-                logger.error("Voiture avec la plaque " + plateNumber + " non trouvée.");
+                logger.error("Livre avec le numéro ISBN  " + ISBN + " non trouvée.");
                 return null;
             } else {
-                logger.error("Erreur lors de la récupération de la voiture : " + e.getMessage());
+                logger.error("Erreur lors de la récupération du livre : " + e.getMessage());
                 return null;
             }
         }
     }
 
 
-    public String postRentCar(String plateNumber,boolean rent) {
-        logger.info("Récuperation de la voiture avec la plaque : " + plateNumber);
+    public String postRentBook(String ISBN,boolean rent) {
+        logger.info("Récuperation du livre avec le numéro ISBN : " + ISBN);
         try{
-            rentGood reply = carServiceStub.rentCar(putRentCar.newBuilder().setPlateNumber(plateNumber).setNewStateRent(rent).build());
+            rentGood reply = bookServiceStub.rentBook(putRentBook.newBuilder().setISBN(ISBN).setNewStateRent(rent).build());
 
-            // Conversion du message Protobuf en CarClient
+            // Conversion du message Protobuf en BookClient
             return "{\"Actual_Rent\": " + reply.getActualRent() + "}";
         }catch(StatusRuntimeException e){
             if (e.getStatus().getCode() == Status.Code.FAILED_PRECONDITION){
                 logger.warn("Erreur de valeur : " + e.getMessage());
             } else if (e.getStatus().getCode() == Status.Code.NOT_FOUND) {
-                logger.error("Voiture avec la plaque " + plateNumber + " non trouvée.");
+                logger.error("Book avec le numéro " + ISBN + " non trouvée.");
             }else{
-                logger.error("Erreur lors de la réservation de la voiture : " + e.getMessage());
+                logger.error("Erreur lors de la réservation du livre : " + e.getMessage());
             }
             return "{\"Erreur\": \"" + e.getStatus().getDescription() + "\", \"Actual_Rent\": null}";
         }

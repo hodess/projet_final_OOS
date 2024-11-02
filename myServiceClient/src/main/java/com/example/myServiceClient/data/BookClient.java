@@ -1,43 +1,38 @@
 package com.example.myServiceClient.data;
 
 public class BookClient {
-    private String plateNumber;
-    private String brand;
-    private int price;
+    private String ISBN;
+    private String name;
+    private String author;
+    private String editor;
     private boolean rented;
-    private long id;
 
-
-    public BookClient(String plateNumber, String brand, int price, boolean rented, long id) {
-        this.plateNumber = plateNumber;
-        this.brand = brand;
-        this.price = price;
-        this.rented = rented;
-        this.id = id;
+    public BookClient(String isbn, String name, String author, String editor, boolean rented) {
     }
 
-    public String getPlateNumber() {
-        return plateNumber;
+
+    public String getName() {
+        return name;
     }
 
-    public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getISBN() {
+        return ISBN;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 
-    public int getPrice() {
-        return price;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public boolean isRented() {
@@ -48,11 +43,21 @@ public class BookClient {
         this.rented = rented;
     }
 
-    public long getId() {
-        return id;
+    public String getEditor() {
+        return editor;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
+
+    public BookClient(String ISBN, String author, String name, boolean rented, String editor) {
+        this.ISBN = ISBN;
+        this.author = author;
+        this.name = name;
+        this.rented = rented;
+        this.editor = editor;
+    }
+
+
 }

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+option java_package = "com.example.lib";
+option java_outer_classname = "BookProto";
+
+// Message représentant une voiture
+message Book {
+  string ISBN = 1;  // Numéro de plaque
+  string name = 2;         // Marque de la voiture
+  string author = 3;          // Prix de la voiture
+  bool rented = 4;          // Indique si la voiture est louée
+  string editor = 5;             // Identifiant unique de la voiture
+}
+
+// Requête pour récupérer une voiture par son numéro de plaque
+message GetBookRequest {
+  string ISBN = 1;  // Numéro de plaque pour identifier la voiture
+}
+
+// Réponse contenant la voiture demandée
+message GetBookResponse {
+  Book book = 1;              // Le livre trouvée
+}
+
+// Requête pour récupérer toutes les voitures
+message GetAllBooksRequest {}
+
+// Réponse contenant une liste de toutes les voitures
+message GetAllBooksResponse {
+  repeated Book books = 1;    // Liste des voitures
+}
+
+// Réponse contenant un boolean
+message rentGood {
+  bool actual_rent = 1;
+}
+
+message putRentBook {
+  string ISBN = 1;  // Numéro ISBN pour identifier le livre
+  bool newStateRent = 2;
+}
+
+// Service pour gérer les voitures
+service BookService {
+  rpc GetBook(GetBookRequest) returns (GetBookResponse);            // Récupérer une voiture par plaque
+  rpc GetAllBooks(GetAllBooksRequest) returns (GetAllBooksResponse); // Récupérer toutes les voitures
+  rpc RentBook(putRentBook) returns (rentGood); // Récupérer toutes les voitures
+}
