@@ -1,16 +1,16 @@
 openapi: 3.0.0
 info:
-  title: My Service Client API
-  description: API pour la gestion des voitures et des locations de voitures
+  title: Book Reservation API
+  description: API pour la gestion des livres et des réservations de livres
   version: 1.0.0
 servers:
-  - url: http://localhost:8081
+  - url: http://localhost:8082
 paths:
   /:
     get:
-      summary: Dire "Hello, world!"
-      description: Renvoie un message "Hello, world!"
-      operationId: sayHello
+      summary: Dire "Bienvenue à la bibliothèque!"
+      description: Renvoie un message d'accueil.
+      operationId: welcomeMessage
       responses:
         '200':
           description: Succès
@@ -18,13 +18,13 @@ paths:
             text/plain:
               schema:
                 type: string
-                example: Hello, world!
+                example: Bienvenue à la bibliothèque!
 
-  /cars:
+  /books:
     get:
-      summary: Récupérer toutes les voitures
-      description: Renvoie la liste des voitures disponibles
-      operationId: allCars
+      summary: Récupérer tous les livres
+      description: Renvoie la liste de tous les livres disponibles dans la bibliothèque
+      operationId: allBooks
       responses:
         '200':
           description: Succès
@@ -35,36 +35,82 @@ paths:
                 items:
                   type: object
                   properties:
-                    plateNumber:
+                    isbn:
                       type: string
-                      example: ABC123
-                    brand:
+                      example: 978-3-16-148410-0
+                    title:
                       type: string
-                      example: Toyota
+                      example: Le Petit Prince
+                    author:
+                      type: string
+                      example: Antoine de Saint-Exupéry
                     price:
                       type: number
                       format: float
-                      example: 20000
-                    rented:
+                      example: 15.99
+                    available:
                       type: boolean
-                      example: false
+                      example: true
                     id:
                       type: integer
                       example: 1
 
-  /cars/{plateNumber}:
+    post:
+      summary: Ajouter un nouveau livre
+      description: Ajoute un livre à la bibliothèque
+      operationId: addBook
+      requestBody:
+        description: Détails du livre à ajouter
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isbn:
+                  type: string
+                  example: 978-3-16-148410-0
+                title:
+                  type: string
+                  example: Le Petit Prince
+                author:
+                  type: string
+                  example: Antoine de Saint-Exupéry
+                price:
+                  type: number
+                  format: float
+                  example: 15.99
+                available:
+                  type: boolean
+                  example: true
+      responses:
+        '201':
+          description: Livre ajouté avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Livre ajouté avec succès
+                  id:
+                    type: integer
+                    example: 1
+
+  /books/{isbn}:
     get:
-      summary: Récupérer une voiture par son numéro d'immatriculation
-      description: Renvoie les détails d'une voiture spécifique en fonction de son numéro de plaque
-      operationId: getCarById
+      summary: Récupérer un livre par son ISBN
+      description: Renvoie les détails d'un livre spécifique en fonction de son ISBN
+      operationId: getBookByIsbn
       parameters:
-        - name: plateNumber
+        - name: isbn
           in: path
           required: true
-          description: Numéro de la plaque de la voiture
+          description: ISBN du livre
           schema:
             type: string
-            example: ABC123
+            example: 978-3-16-148410-0
       responses:
         '200':
           description: Succès
@@ -73,41 +119,45 @@ paths:
               schema:
                 type: object
                 properties:
-                  plateNumber:
+                  isbn:
                     type: string
-                    example: ABC123
-                  brand:
+                    example: 978-3-16-148410-0
+                  title:
                     type: string
-                    example: BMW
+                    example: Le Petit Prince
+                  author:
+                    type: string
+                    example: Antoine de Saint-Exupéry
                   price:
                     type: number
                     format: float
-                    example: 30000
-                  rented:
+                    example: 15.99
+                  available:
                     type: boolean
-                    example: false
+                    example: true
                   id:
                     type: integer
-                    example: 3
+                    example: 1
         '404':
-          description: Voiture non trouvée
+          description: Livre non trouvé
 
+  /books/{isbn}/reserve:
     put:
-      summary: Modifier l'état de location d'une voiture
-      description: Permet de mettre à jour l'état de location d'une voiture (louée ou non)
-      operationId: postCarRent
+      summary: Réserver un livre
+      description: Permet de réserver un livre en changeant son statut de disponibilité
+      operationId: reserveBook
       parameters:
-        - name: plateNumber
+        - name: isbn
           in: path
           required: true
-          description: Numéro de la plaque de la voiture
+          description: ISBN du livre
           schema:
             type: string
-            example: ABC123
-        - name: rent
+            example: 978-3-16-148410-0
+        - name: reserve
           in: query
           required: true
-          description: État de la location (true = louée, false = non louée)
+          description: Statut de la réservation (true = réservé, false = disponible)
           schema:
             type: boolean
             example: true
@@ -119,8 +169,43 @@ paths:
               schema:
                 type: object
                 properties:
-                  Actual_Rent:
+                  Actual_Reservation:
                     type: boolean
                     example: true
         '404':
-          description: Voiture non trouvée
+          description: Livre non trouvé
+
+  /books/reserved:
+    get:
+      summary: Récupérer tous les livres réservés
+      description: Renvoie la liste des livres qui sont actuellement réservés
+      operationId: allReservedBooks
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isbn:
+                      type: string
+                      example: 978-3-16-148410-0
+                    title:
+                      type: string
+                      example: Le Petit Prince
+                    author:
+                      type: string
+                      example: Antoine de Saint-Exupéry
+                    price:
+                      type: number
+                      format: float
+                      example: 15.99
+                    available:
+                      type: boolean
+                      example: false
+                    id:
+                      type: integer
+                      example: 1
