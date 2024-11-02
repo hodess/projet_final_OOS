@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: My Service Client API
+  description: API pour la gestion des voitures et des locations de voitures
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /:
+    get:
+      summary: Dire "Hello, world!"
+      description: Renvoie un message "Hello, world!"
+      operationId: sayHello
+      responses:
+        '200':
+          description: Succès
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Hello, world!
+
+  /cars:
+    get:
+      summary: Récupérer toutes les voitures
+      description: Renvoie la liste des voitures disponibles
+      operationId: allCars
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    plateNumber:
+                      type: string
+                      example: ABC123
+                    brand:
+                      type: string
+                      example: Toyota
+                    price:
+                      type: number
+                      format: float
+                      example: 20000
+                    rented:
+                      type: boolean
+                      example: false
+                    id:
+                      type: integer
+                      example: 1
+
+  /cars/{plateNumber}:
+    get:
+      summary: Récupérer une voiture par son numéro d'immatriculation
+      description: Renvoie les détails d'une voiture spécifique en fonction de son numéro de plaque
+      operationId: getCarById
+      parameters:
+        - name: plateNumber
+          in: path
+          required: true
+          description: Numéro de la plaque de la voiture
+          schema:
+            type: string
+            example: ABC123
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plateNumber:
+                    type: string
+                    example: ABC123
+                  brand:
+                    type: string
+                    example: BMW
+                  price:
+                    type: number
+                    format: float
+                    example: 30000
+                  rented:
+                    type: boolean
+                    example: false
+                  id:
+                    type: integer
+                    example: 3
+        '404':
+          description: Voiture non trouvée
+
+    put:
+      summary: Modifier l'état de location d'une voiture
+      description: Permet de mettre à jour l'état de location d'une voiture (louée ou non)
+      operationId: postCarRent
+      parameters:
+        - name: plateNumber
+          in: path
+          required: true
+          description: Numéro de la plaque de la voiture
+          schema:
+            type: string
+            example: ABC123
+        - name: rent
+          in: query
+          required: true
+          description: État de la location (true = louée, false = non louée)
+          schema:
+            type: boolean
+            example: true
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Actual_Rent:
+                    type: boolean
+                    example: true
+        '404':
+          description: Voiture non trouvée
