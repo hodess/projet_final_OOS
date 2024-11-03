@@ -20,13 +20,13 @@ public class BookServiceImpl extends BookServiceGrpc.BookServiceImplBase {
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
         logger.info("BookService initialized.");
-        initializeBooks(); // Appel de la méthode pour initialiser les voitures
+        initializeBooks(); // Appel de la méthode pour initialiser les livres
     }
 
-    // Méthode pour ajouter des voitures initiales
+    // Méthode pour ajouter des livres  initiales
     private void initializeBooks() {
         if (bookRepository.count() == 0) { // Vérifier si la base de données est vide
-            logger.info("Ajout des voitures initiales");
+            logger.info("Ajout des livres initiales");
             bookRepository.save(new BookJPA("ABC123", "Tolkien", "The Lord of the Ring", false, "Galimard"));
             bookRepository.save(new BookJPA("DEF456", "JK Rowling", "Harry Potter", true, "Folio"));
 
@@ -36,8 +36,23 @@ public class BookServiceImpl extends BookServiceGrpc.BookServiceImplBase {
     }
 
     @Override
+    public void getAllBooks(GetAllBooksRequest request, StreamObserver<GetAllBooksResponse> responseObserver) {
+        logger.info("Trouver toutes les livres");
+
+        List<BookJPA> books = bookRepository.findAll(); // Récupérer toutes les livres depuis la base de données
+        GetAllBooksResponse.Builder responseBuilder = GetAllBooksResponse.newBuilder();
+
+        for (BookJPA bookJPA : books) {
+            Book bookProto = BookConverter.bookJPAToProtobuf(bookJPA);
+            responseBuilder.addBooks(bookProto);
+        }
+        responseObserver.onNext(responseBuilder.build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void getBook(GetBookRequest request, StreamObserver<GetBookResponse> responseObserver) {
-        logger.info("Trouver la voiture : " + request.getISBN());
+        logger.info("Trouver le livre : " + request.getISBN());
 
         BookJPA bookJPA = bookRepository.findByISBN(request.getISBN());
         if (bookJPA != null) {
@@ -54,34 +69,36 @@ public class BookServiceImpl extends BookServiceGrpc.BookServiceImplBase {
     }
 
     @Override
-    public void getAllBooks(GetAllBooksRequest request, StreamObserver<GetAllBooksResponse> responseObserver) {
-        logger.info("Trouver toutes les voitures");
+    public void getRentedBooks(GetAllBooksRequest request, StreamObserver<GetAllBooksResponse> responseObserver) {
+        logger.info("Finding all rented books");
 
-        List<BookJPA> books = bookRepository.findAll(); // Récupérer toutes les voitures depuis la base de données
+        // Fetch only rented books from the database
+        List<BookJPA> rentedBooks = bookRepository.findByRentedTrue();
+
         GetAllBooksResponse.Builder responseBuilder = GetAllBooksResponse.newBuilder();
 
-        for (BookJPA bookJPA : books) {
+        // Convert each rented BookJPA to Book (Protobuf) and add to response
+        for (BookJPA bookJPA : rentedBooks) {
             Book bookProto = BookConverter.bookJPAToProtobuf(bookJPA);
             responseBuilder.addBooks(bookProto);
         }
-
         responseObserver.onNext(responseBuilder.build());
         responseObserver.onCompleted();
     }
 
     @Override
     public void rentBook(putRentBook request, StreamObserver<rentGood> responseObserver) {
-        logger.info("Réserve la voiture : " + request.getISBN() + ". Si cela est possible");
+        logger.info("Réserve le livre : " + request.getISBN() + ". Si cela est possible");
 
         BookJPA bookJPA = bookRepository.findByISBN(request.getISBN());
         if (bookJPA != null) {
             if (bookJPA.isRented() == request.getNewStateRent()) {
                 StatusRuntimeException exception = Status.FAILED_PRECONDITION
-                        .withDescription("La voiture avec le numéro de plaque " + request.getISBN() + " est déjà louée.")
+                        .withDescription("Le livre avec le numéro de plaque " + request.getISBN() + " est déjà louée.")
                         .asRuntimeException();
                 responseObserver.onError(exception);
             } else {
-                // Marquer la voiture comme louée
+                // Marquer le livre comme louée
                 bookJPA.setRented(true);
                 bookRepository.save(bookJPA); // Enregistrer l'état modifié dans la base de données
 

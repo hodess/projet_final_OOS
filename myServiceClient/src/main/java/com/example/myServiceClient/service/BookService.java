@@ -29,9 +29,22 @@ public class BookService {
         // Appel gRPC pour obtenir les livres sous forme de message Protobuf
         GetAllBooksResponse reply = bookServiceStub.getAllBooks(GetAllBooksRequest.newBuilder().build());
 
+
         // Convertir chaque message Protobuf Book en entité BookClient
         return reply.getBooksList().stream()
                 .map(BookConverter::protobufToBookClient) // Conversion Protobuf -> JPA
+                .collect(Collectors.toList());
+    }
+
+    public List<BookClient> rentedBooks() {
+        logger.info("Récupération des livres réservés...");
+
+        // gRPC call to retrieve only the rented books
+        GetAllBooksResponse reply = bookServiceStub.getRentedBooks(GetAllBooksRequest.newBuilder().build());
+
+        // Convert each Protobuf Book message to a BookClient entity
+        return reply.getBooksList().stream()
+                .map(BookConverter::protobufToBookClient) // Conversion Protobuf -> BookClient
                 .collect(Collectors.toList());
     }
 

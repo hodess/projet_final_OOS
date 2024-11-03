@@ -9,10 +9,10 @@ public class BookConverter {
     public static BookClient protobufToBookClient(Book book) {
         return new BookClient(
                 book.getISBN(),
-                book.getName(),
                 book.getAuthor(),
-                book.getEditor(),
-                book.getRented()
+                book.getName(),
+                book.getRented(),
+                book.getEditor()
         );
     }
 }

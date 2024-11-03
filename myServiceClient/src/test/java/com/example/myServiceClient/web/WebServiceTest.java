@@ -1,4 +1,4 @@
-/* package com.example.myServiceClient.web;
+/*package com.example.myServiceClient.web;
 
 import com.example.myServiceClient.data.BookClient;
 import com.example.myServiceClient.service.BookService;
@@ -72,18 +72,18 @@ public class WebServiceTest {
     @Test
     public void testGetBookById() throws Exception {
         // Créer un livre factice
-        BookClient book = new BookClient("XYZ789", "Tolkien", "The Hobbit", false, "Galimard");
+        BookClient book = new BookClient("DEF456", "JK Rowling", "Harry Potter", true, "Folio");
 
 
         // Simuler la réponse du service BookService pour un ID spécifique
-        when(bookService.getBookByISBN("XYZ789")).thenReturn(book);
+        when(bookService.getBookByISBN("DEF456")).thenReturn(book);
 
         // Effectuer une requête GET et vérifier le résultat
-        mockMvc.perform(get("/books/XYZ789")
+        mockMvc.perform(get("/books/DEF456")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ISBN", equalTo("XYZ789")))
-                .andExpect(jsonPath("$.author", equalTo("Tolkien")));
+                .andExpect(jsonPath("$.ISBN", equalTo("DEF456")))
+                .andExpect(jsonPath("$.author", equalTo("Harry Potter")));
     }
 
     // Test pour le endpoint "postBookRent()"
@@ -100,6 +100,4 @@ public class WebServiceTest {
                 .andExpect(content().string(containsString("\"Actual_Rent\": true")));
     }
 }
-
-
- */
+*/

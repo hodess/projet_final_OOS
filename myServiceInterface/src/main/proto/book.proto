@@ -48,4 +48,5 @@ service BookService {
   rpc GetBook(GetBookRequest) returns (GetBookResponse);            // Récupérer une voiture par plaque
   rpc GetAllBooks(GetAllBooksRequest) returns (GetAllBooksResponse); // Récupérer toutes les voitures
   rpc RentBook(putRentBook) returns (rentGood); // Récupérer toutes les voitures
+  rpc getRentedBooks(GetAllBooksRequest) returns (GetAllBooksResponse);
 }

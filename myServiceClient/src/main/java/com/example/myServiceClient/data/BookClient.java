@@ -7,7 +7,15 @@ public class BookClient {
     private String editor;
     private boolean rented;
 
-    public BookClient(String isbn, String name, String author, String editor, boolean rented) {
+    public BookClient(){
+    }
+
+    public BookClient(String ISBN, String author, String name, boolean rented, String editor) {
+        this.ISBN = ISBN;
+        this.author = author;
+        this.name = name;
+        this.rented = rented;
+        this.editor = editor;
     }
 
 
@@ -50,14 +58,5 @@ public class BookClient {
     public void setEditor(String editor) {
         this.editor = editor;
     }
-
-    public BookClient(String ISBN, String author, String name, boolean rented, String editor) {
-        this.ISBN = ISBN;
-        this.author = author;
-        this.name = name;
-        this.rented = rented;
-        this.editor = editor;
-    }
-
 
 }

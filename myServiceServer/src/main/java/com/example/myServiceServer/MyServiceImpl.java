@@ -16,9 +16,9 @@ public class MyServiceImpl extends MyServiceGrpc.MyServiceImplBase {
 
     @Override
     public void sayHello(Empty request, StreamObserver<HelloReply> responseObserver) {
-        logger.info("sayHello world"); // Log de l'appel
+        logger.info("sayHello"); // Log de l'appel
         responseObserver.onNext(HelloReply.newBuilder()
-                .setMessage("Hello World") // Réponse avec "Hello World"
+                .setMessage("Hello you are at the librairie : Chat Pitre") // Réponse avec "Hello World"
                 .build());
         responseObserver.onCompleted(); // Indique que la réponse est terminée
     }

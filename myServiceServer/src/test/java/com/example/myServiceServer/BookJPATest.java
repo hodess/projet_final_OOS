@@ -1,4 +1,4 @@
-/* package com.example.myServiceServer;
+/*package com.example.myServiceServer;
 
 import com.example.myServiceServer.data.BookJPA;
 import com.example.myServiceServer.data.BookRepository;
@@ -82,7 +82,4 @@ public class BookJPATest {
         assertNull(foundBook, "La voiture aurait dû être supprimée");
     }
 }
-
-
-
- */
+*/

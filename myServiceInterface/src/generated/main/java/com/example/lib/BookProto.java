@@ -66,14 +66,16 @@ public final class BookProto {
       "AllBooksRequest\"7\n\023GetAllBooksResponse\022 " +
       "\n\005books\030\001 \003(\0132\021.com.example.Book\"\037\n\010rent" +
       "Good\022\023\n\013actual_rent\030\001 \001(\010\"1\n\013putRentBook" +
-      "\022\014\n\004ISBN\030\001 \001(\t\022\024\n\014newStateRent\030\002 \001(\0102\342\001\n" +
+      "\022\014\n\004ISBN\030\001 \001(\t\022\024\n\014newStateRent\030\002 \001(\0102\267\002\n" +
       "\013BookService\022D\n\007GetBook\022\033.com.example.Ge" +
       "tBookRequest\032\034.com.example.GetBookRespon" +
       "se\022P\n\013GetAllBooks\022\037.com.example.GetAllBo" +
       "oksRequest\032 .com.example.GetAllBooksResp" +
       "onse\022;\n\010RentBook\022\030.com.example.putRentBo" +
-      "ok\032\025.com.example.rentGoodB\036\n\017com.example" +
-      ".libB\tBookProtoP\001b\006proto3"
+      "ok\032\025.com.example.rentGood\022S\n\016getRentedBo" +
+      "oks\022\037.com.example.GetAllBooksRequest\032 .c" +
+      "om.example.GetAllBooksResponseB\036\n\017com.ex" +
+      "ample.libB\tBookProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

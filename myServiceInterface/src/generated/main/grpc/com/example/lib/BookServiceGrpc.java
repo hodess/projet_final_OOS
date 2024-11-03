@@ -111,6 +111,37 @@ public final class BookServiceGrpc {
     return getRentBookMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.example.lib.GetAllBooksRequest,
+      com.example.lib.GetAllBooksResponse> getGetRentedBooksMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getRentedBooks",
+      requestType = com.example.lib.GetAllBooksRequest.class,
+      responseType = com.example.lib.GetAllBooksResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.example.lib.GetAllBooksRequest,
+      com.example.lib.GetAllBooksResponse> getGetRentedBooksMethod() {
+    io.grpc.MethodDescriptor<com.example.lib.GetAllBooksRequest, com.example.lib.GetAllBooksResponse> getGetRentedBooksMethod;
+    if ((getGetRentedBooksMethod = BookServiceGrpc.getGetRentedBooksMethod) == null) {
+      synchronized (BookServiceGrpc.class) {
+        if ((getGetRentedBooksMethod = BookServiceGrpc.getGetRentedBooksMethod) == null) {
+          BookServiceGrpc.getGetRentedBooksMethod = getGetRentedBooksMethod =
+              io.grpc.MethodDescriptor.<com.example.lib.GetAllBooksRequest, com.example.lib.GetAllBooksResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getRentedBooks"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.example.lib.GetAllBooksRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.example.lib.GetAllBooksResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new BookServiceMethodDescriptorSupplier("getRentedBooks"))
+              .build();
+        }
+      }
+    }
+    return getGetRentedBooksMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -191,6 +222,13 @@ public final class BookServiceGrpc {
         io.grpc.stub.StreamObserver<com.example.lib.rentGood> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRentBookMethod(), responseObserver);
     }
+
+    /**
+     */
+    default void getRentedBooks(com.example.lib.GetAllBooksRequest request,
+        io.grpc.stub.StreamObserver<com.example.lib.GetAllBooksResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetRentedBooksMethod(), responseObserver);
+    }
   }
 
   /**
@@ -258,6 +296,14 @@ public final class BookServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRentBookMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getRentedBooks(com.example.lib.GetAllBooksRequest request,
+        io.grpc.stub.StreamObserver<com.example.lib.GetAllBooksResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetRentedBooksMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -307,6 +353,13 @@ public final class BookServiceGrpc {
     public com.example.lib.rentGood rentBook(com.example.lib.putRentBook request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRentBookMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.example.lib.GetAllBooksResponse getRentedBooks(com.example.lib.GetAllBooksRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetRentedBooksMethod(), getCallOptions(), request);
     }
   }
 
@@ -361,11 +414,20 @@ public final class BookServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRentBookMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.example.lib.GetAllBooksResponse> getRentedBooks(
+        com.example.lib.GetAllBooksRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetRentedBooksMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_BOOK = 0;
   private static final int METHODID_GET_ALL_BOOKS = 1;
   private static final int METHODID_RENT_BOOK = 2;
+  private static final int METHODID_GET_RENTED_BOOKS = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -395,6 +457,10 @@ public final class BookServiceGrpc {
         case METHODID_RENT_BOOK:
           serviceImpl.rentBook((com.example.lib.putRentBook) request,
               (io.grpc.stub.StreamObserver<com.example.lib.rentGood>) responseObserver);
+          break;
+        case METHODID_GET_RENTED_BOOKS:
+          serviceImpl.getRentedBooks((com.example.lib.GetAllBooksRequest) request,
+              (io.grpc.stub.StreamObserver<com.example.lib.GetAllBooksResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -435,6 +501,13 @@ public final class BookServiceGrpc {
               com.example.lib.putRentBook,
               com.example.lib.rentGood>(
                 service, METHODID_RENT_BOOK)))
+        .addMethod(
+          getGetRentedBooksMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.example.lib.GetAllBooksRequest,
+              com.example.lib.GetAllBooksResponse>(
+                service, METHODID_GET_RENTED_BOOKS)))
         .build();
   }
 
@@ -486,6 +559,7 @@ public final class BookServiceGrpc {
               .addMethod(getGetBookMethod())
               .addMethod(getGetAllBooksMethod())
               .addMethod(getRentBookMethod())
+              .addMethod(getGetRentedBooksMethod())
               .build();
         }
       }
