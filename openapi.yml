@@ -1,211 +1,124 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Book Reservation API
-  description: API pour la gestion des livres et des réservations de livres
+  title: Book Service API
+  description: API for managing books and their rental status
   version: 1.0.0
+
 servers:
-  - url: http://localhost:8082
+  - url: http://localhost:8081
+    description: Default server
+
 paths:
   /:
     get:
-      summary: Dire "Bienvenue à la bibliothèque!"
-      description: Renvoie un message d'accueil.
-      operationId: welcomeMessage
+      summary: Say Hello
+      description: Returns a hello message.
       responses:
         '200':
-          description: Succès
+          description: Success
           content:
-            text/plain:
+            application/json:
               schema:
                 type: string
-                example: Bienvenue à la bibliothèque!
 
   /books:
     get:
-      summary: Récupérer tous les livres
-      description: Renvoie la liste de tous les livres disponibles dans la bibliothèque
-      operationId: allBooks
+      summary: Get all books
+      description: Retrieve a list of all books.
       responses:
         '200':
-          description: Succès
+          description: A list of books
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    isbn:
-                      type: string
-                      example: 978-3-16-148410-0
-                    title:
-                      type: string
-                      example: Le Petit Prince
-                    author:
-                      type: string
-                      example: Antoine de Saint-Exupéry
-                    price:
-                      type: number
-                      format: float
-                      example: 15.99
-                    available:
-                      type: boolean
-                      example: true
-                    id:
-                      type: integer
-                      example: 1
+                  $ref: '#/components/schemas/BookClient'
 
-    post:
-      summary: Ajouter un nouveau livre
-      description: Ajoute un livre à la bibliothèque
-      operationId: addBook
-      requestBody:
-        description: Détails du livre à ajouter
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                isbn:
-                  type: string
-                  example: 978-3-16-148410-0
-                title:
-                  type: string
-                  example: Le Petit Prince
-                author:
-                  type: string
-                  example: Antoine de Saint-Exupéry
-                price:
-                  type: number
-                  format: float
-                  example: 15.99
-                available:
-                  type: boolean
-                  example: true
-      responses:
-        '201':
-          description: Livre ajouté avec succès
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Livre ajouté avec succès
-                  id:
-                    type: integer
-                    example: 1
-
-  /books/{isbn}:
+  /books/rented:
     get:
-      summary: Récupérer un livre par son ISBN
-      description: Renvoie les détails d'un livre spécifique en fonction de son ISBN
-      operationId: getBookByIsbn
-      parameters:
-        - name: isbn
-          in: path
-          required: true
-          description: ISBN du livre
-          schema:
-            type: string
-            example: 978-3-16-148410-0
+      summary: Get rented books
+      description: Retrieve a list of all rented books.
       responses:
         '200':
-          description: Succès
+          description: A list of rented books
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  isbn:
-                    type: string
-                    example: 978-3-16-148410-0
-                  title:
-                    type: string
-                    example: Le Petit Prince
-                  author:
-                    type: string
-                    example: Antoine de Saint-Exupéry
-                  price:
-                    type: number
-                    format: float
-                    example: 15.99
-                  available:
-                    type: boolean
-                    example: true
-                  id:
-                    type: integer
-                    example: 1
-        '404':
-          description: Livre non trouvé
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookClient'
 
-  /books/{isbn}/reserve:
-    put:
-      summary: Réserver un livre
-      description: Permet de réserver un livre en changeant son statut de disponibilité
-      operationId: reserveBook
+  /books/{ISBN}:
+    get:
+      summary: Get book by ISBN
+      description: Retrieve a specific book by its ISBN.
       parameters:
-        - name: isbn
-          in: path
+        - in: path
+          name: ISBN
           required: true
-          description: ISBN du livre
           schema:
             type: string
-            example: 978-3-16-148410-0
-        - name: reserve
-          in: query
+          description: ISBN of the book to retrieve
+      responses:
+        '200':
+          description: A single book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookClient'
+        '404':
+          description: Book not found
+
+    put:
+      summary: Update book rental status
+      description: Update the rental status of a specific book by its ISBN.
+      parameters:
+        - in: path
+          name: ISBN
           required: true
-          description: Statut de la réservation (true = réservé, false = disponible)
+          schema:
+            type: string
+          description: ISBN of the book to update
+        - in: query
+          name: rent
+          required: true
           schema:
             type: boolean
-            example: true
+          description: New rental status (true if rented, false if available)
       responses:
         '200':
-          description: Succès
+          description: Rental status updated
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Actual_Reservation:
-                    type: boolean
-                    example: true
+                type: string
         '404':
-          description: Livre non trouvé
+          description: Book not found
 
-  /books/reserved:
-    get:
-      summary: Récupérer tous les livres réservés
-      description: Renvoie la liste des livres qui sont actuellement réservés
-      operationId: allReservedBooks
-      responses:
-        '200':
-          description: Succès
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    isbn:
-                      type: string
-                      example: 978-3-16-148410-0
-                    title:
-                      type: string
-                      example: Le Petit Prince
-                    author:
-                      type: string
-                      example: Antoine de Saint-Exupéry
-                    price:
-                      type: number
-                      format: float
-                      example: 15.99
-                    available:
-                      type: boolean
-                      example: false
-                    id:
-                      type: integer
-                      example: 1
+components:
+  schemas:
+    BookClient:
+      type: object
+      properties:
+        ISBN:
+          type: string
+          description: ISBN of the book
+        name:
+          type: string
+          description: Name of the book
+        author:
+          type: string
+          description: Author of the book
+        editor:
+          type: string
+          description: Publisher/editor of the book
+        rented:
+          type: boolean
+          description: Rental status of the book (true if rented, false if available)
+      required:
+        - ISBN
+        - name
+        - author
+        - rented
+        - editor
