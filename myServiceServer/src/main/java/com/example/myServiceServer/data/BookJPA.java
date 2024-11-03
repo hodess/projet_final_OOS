@@ -12,7 +12,6 @@ public class BookJPA {
     public BookJPA() {
     }
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String ISBN;
     private String author;
     private String name;
